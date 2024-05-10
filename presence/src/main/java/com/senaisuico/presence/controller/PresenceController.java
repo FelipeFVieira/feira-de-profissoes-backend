@@ -60,4 +60,24 @@ public class PresenceController {
 	    SpringDataRepository.delete(presence);
 		return ResponseEntity.ok(presence);
 	}
+	
+	@PutMapping(path="/update/{id}")
+	public @ResponseBody ResponseEntity<Presence> updatePresence(@PathVariable int id, @RequestBody Presence updatedPresence) {
+		Optional<Presence> optionalUser = SpringDataRepository.findById(id);
+	    if (!optionalUser.isPresent()) {
+	        return ResponseEntity.notFound().build();
+	    }
+	    
+	    Presence presence = optionalUser.get();
+	    presence.setName(updatedPresence.getName());
+	    presence.setDate_birth(updatedPresence.getDate_birth());
+	    presence.setEmail(updatedPresence.getEmail());
+	    presence.setProfessional_goal(updatedPresence.getProfessional_goal());
+	    presence.setNeighborhood(updatedPresence.getNeighborhood());
+
+	    Presence savedPresence = SpringDataRepository.save(presence);
+	    return ResponseEntity.ok(savedPresence);
+		
+	}
+
 }
