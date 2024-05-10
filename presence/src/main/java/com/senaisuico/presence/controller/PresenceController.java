@@ -48,4 +48,16 @@ public class PresenceController {
 	    }
 	}
 	
+	@DeleteMapping(path="/delete/{id}")
+	public @ResponseBody ResponseEntity<Presence> deletePresence (@PathVariable int id) {
+		Presence presence;
+		Optional<Presence> optionalUser = SpringDataRepository.findById(id);
+		if (!optionalUser.isPresent()) {
+			return ResponseEntity.notFound().build();
+		} 
+		
+		presence = optionalUser.get();
+	    SpringDataRepository.delete(presence);
+		return ResponseEntity.ok(presence);
+	}
 }
